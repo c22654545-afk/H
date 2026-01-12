@@ -1,0 +1,776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>CLOUD_HOST | QUANTUM INFRASTRUCTURE</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.css"/>
+    <style>
+        :root {
+            --bg: #f8fafc;
+            --card: #ffffff;
+            --primary: #8b5cf6;
+            --secondary: #3b82f6;
+            --accent: #10b981;
+            --text: #1e293b;
+            --text-dim: #64748b;
+            --border: #e2e8f0;
+            --glow: rgba(139, 92, 246, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Animated Background */
+        .quantum-field {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%);
+            z-index: -1;
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: linear-gradient(var(--border) 1px, transparent 1px), linear-gradient(90deg, var(--border) 1px, transparent 1px);
+            background-size: 60px 60px;
+            mask-image: radial-gradient(circle at center, black, transparent 80%);
+            z-index: -1;
+        }
+
+        /* Navigation */
+        .nav {
+            padding: 20px 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(20px);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo { 
+            font-size: 24px; 
+            font-weight: 800; 
+            letter-spacing: -1.5px;
+            background: linear-gradient(90deg, var(--text), var(--primary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .system-time {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+
+        /* Main Hero */
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 120px 20px;
+            text-align: center;
+            position: relative;
+        }
+
+        .version-tag {
+            background: rgba(0, 255, 204, 0.1);
+            color: var(--primary);
+            padding: 8px 20px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 800;
+            border: 1px solid var(--primary);
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            box-shadow: 0 0 30px var(--glow);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.8; }
+            50% { opacity: 1; box-shadow: 0 0 50px var(--glow); }
+            100% { opacity: 0.8; }
+        }
+
+        h1 {
+            font-size: clamp(32px, 8vw, 64px);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -2px;
+            margin-bottom: 30px;
+            color: var(--text);
+        }
+
+        h1 span {
+            display: inline;
+            background: linear-gradient(to right, var(--primary), var(--secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            color: var(--text-dim);
+            font-size: 20px;
+            max-width: 600px;
+            margin-bottom: 60px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        /* Control Panel */
+        .control-panel {
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 50px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .control-panel:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 30px 60px rgba(0,0,0,0.1);
+        }
+
+        .input-group {
+            text-align: left;
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text-dim);
+            margin-bottom: 12px;
+        }
+
+        input {
+            width: 100%;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            padding: 20px;
+            color: var(--text);
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        input:focus { 
+            border-color: var(--primary);
+            background: #fff;
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.1);
+        }
+
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .action-btn {
+            width: 100%;
+            padding: 18px;
+            background: var(--primary);
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-weight: 900;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .action-btn.secondary { background: #64748b; }
+        .action-btn.danger { background: #ef4444; color: #fff; }
+
+        .action-btn:hover { 
+            background: var(--text);
+            color: #fff;
+            box-shadow: 0 10px 40px rgba(139, 92, 246, 0.2);
+        }
+
+        /* Stats Dashboard */
+        .dashboard {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin: 80px auto;
+            padding: 0 20px;
+        }
+
+        .stat-item {
+            flex: 1;
+            background: var(--card);
+            border: 1px solid var(--border);
+            padding: 40px 20px;
+            text-align: center;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
+        }
+
+        .stat-item .val {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .stat-item .lbl {
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-dim);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+
+        /* Telemetry Footer */
+        .telemetry-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 15px 40px;
+            background: rgba(255, 255, 255, 0.9);
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-dim);
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+        }
+
+        .telemetry-bar span { color: var(--primary); font-weight: 700; }
+
+        .file-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: rgba(59, 130, 246, 0.1);
+            color: var(--secondary);
+            border-radius: 8px;
+            margin-right: 10px;
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 12px 20px;
+            background: #f1f5f9;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+
+        @media (max-width: 768px) {
+            .dashboard { flex-direction: column; }
+            h1 { font-size: 64px; }
+            .action-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="quantum-field"></div>
+    <div class="grid-overlay"></div>
+    
+    <nav class="nav">
+        <div class="logo" style="display:flex; align-items:center; gap:10px;">
+            <svg viewBox="0 0 24 24" width="24" height="24" fill="var(--secondary)"><path d="M17.5,19c-3.037,0-5.5-2.463-5.5-5.5c0-0.124,0.005-0.247,0.015-0.369C11.391,12.44,10.718,12,10,12c-1.105,0-2,0.895-2,2 c0,1.105,0.895,2,2,2h7.5c1.381,0,2.5,1.119,2.5,2.5S18.881,21,17.5,21h-12C3.567,21,2,19.433,2,17.5c0-1.745,1.284-3.19,2.955-3.46 C5.015,13.918,5,13.71,5,13.5c0-2.485,2.015-4.5,4.5-4.5c0.33,0,0.648,0.038,0.954,0.106C11.336,6.97,13.702,5,16.5,5 c3.59,0,6.5,2.91,6.5,6.5c0,0.119-0.004,0.237-0.011,0.354C23.619,12.404,24,13.155,24,14c0,1.657-1.343,3-3,3h-0.5 c0,1.105-0.895,2-2,2H17.5z" /></svg>
+            CLOUD //
+        </div>
+        <div style="display: flex; gap: 20px;">
+            <button id="nav-home" onclick="showView('hero')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:800;">HOME</button>
+            <button id="nav-dashboard" onclick="showView('dashboard-view')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:800;">DASHBOARD</button>
+            <button id="nav-files" onclick="showView('files-view')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:800;">FILES</button>
+            <button id="nav-ai" onclick="showView('ai-view')" style="background:none; border:none; color:var(--primary); cursor:pointer; font-weight:800;">AI HUB</button>
+            <button id="start-tutorial" onclick="runTutorial()" style="background:var(--primary); border:none; color:#fff; cursor:pointer; font-weight:800; padding: 5px 15px; border-radius: 4px; font-size: 11px;">TUTORIAL</button>
+        </div>
+        <div class="system-time" id="sys_time">INITIALIZING...</div>
+    </nav>
+
+    <main id="hero" class="hero">
+        <div class="version-tag" style="border-color: var(--secondary); color: var(--secondary); background: rgba(59, 130, 246, 0.1);">Cloud Network V7.5</div>
+        <h1>THE NEXT GEN <span>CLOUD MASTER.</span></h1>
+        <p>Industrial-grade distributed node management. Scalable, secure, and powered by advanced neural intelligence.</p>
+
+        <div style="display:flex; gap:20px; margin-bottom:60px;">
+            <div style="background:var(--card); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:left; min-width:180px;">
+                <div style="color:var(--secondary); font-size:10px; font-weight:800; margin-bottom:5px;">GLOBAL LATENCY</div>
+                <div style="font-size:24px; font-weight:800;" id="hero_ping">--ms</div>
+            </div>
+            <div style="background:var(--card); padding:20px; border-radius:12px; border:1px solid var(--border); text-align:left; min-width:180px;">
+                <div style="color:var(--accent); font-size:10px; font-weight:800; margin-bottom:5px;">SYSTEM HEALTH</div>
+                <div style="font-size:24px; font-weight:800;">100%</div>
+            </div>
+        </div>
+
+        <div id="hero-panel" class="control-panel">
+            <form id="auth_process">
+                <div id="token-input" class="input-group">
+                    <label>Neural Node Token</label>
+                    <input type="password" id="token" placeholder="NODE_AUTH_KEY" required>
+                </div>
+                
+                <div id="payload-input" class="input-group">
+                    <label>Command Payload</label>
+                    <input type="text" id="payload" placeholder="Optional value (e.g. status message)">
+                </div>
+
+                <div class="action-grid">
+                    <button id="btn-deploy" type="submit" class="action-btn">Deploy Uplink</button>
+                    <button id="btn-update" type="button" onclick="manage('set_activity')" class="action-btn secondary">Update Activity</button>
+                    <button id="btn-terminate" type="button" onclick="manage('stop')" class="action-btn danger">Terminate Node</button>
+                    <button id="btn-sync" type="button" onclick="refreshStats()" class="action-btn secondary">Sync Stats</button>
+                </div>
+            </form>
+            <div id="console_log"></div>
+        </div>
+
+        <div class="dashboard">
+            <div class="stat-item">
+                <span class="lbl">Neural Nodes</span>
+                <span class="val" id="node_count">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="lbl">Packet Flux</span>
+                <span class="val" id="data_count">0</span>
+            </div>
+            <div class="stat-item">
+                <span class="lbl">Uptime Status</span>
+                <span class="val" id="sys_uptime">0:00</span>
+            </div>
+        </div>
+    </main>
+
+    <main id="dashboard-view" class="hero" style="display:none; padding-top: 50px;">
+        <div class="version-tag">Cloud Infrastructure</div>
+        <h1>CLOUD <span>NETWORK.</span></h1>
+        <div style="display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:20px; width:100%; max-width:1000px; margin-bottom:40px;">
+            <div class="stat-item" style="padding:20px;">
+                <span class="lbl">Global Servers</span>
+                <span class="val" id="total_guilds" style="font-size:24px;">0</span>
+            </div>
+            <div class="stat-item" style="padding:20px;">
+                <span class="lbl">Cloud Latency</span>
+                <span class="val" style="font-size:24px;" id="cloud_ping">--ms</span>
+            </div>
+            <div class="stat-item" style="padding:20px;">
+                <span class="lbl">Network Health</span>
+                <span class="val" style="font-size:24px; color:var(--accent)">ACTIVE</span>
+            </div>
+            <div class="stat-item" style="padding:20px;">
+                <span class="lbl">Memory Load</span>
+                <span class="val" style="font-size:24px;" id="dash_mem">--MB</span>
+            </div>
+            <div class="stat-item" style="padding:20px;">
+                <span class="lbl">CPU Intensity</span>
+                <span class="val" style="font-size:24px;" id="dash_cpu">--%</span>
+            </div>
+        </div>
+        <div id="bot_list" style="width:100%; max-width:1000px; display:grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap:15px; margin-bottom: 40px;"></div>
+
+        <div class="control-panel" style="max-width:1000px; width:100%; background: rgba(139, 92, 246, 0.05); border-style: dashed;">
+            <div style="font-size:12px; font-weight:800; color:var(--primary); margin-bottom:20px; text-transform:uppercase; letter-spacing:2px;">Advanced Cluster Operations</div>
+            <div class="action-grid" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));">
+                <button onclick="batchAction('restart')" class="action-btn">Reboot Cluster</button>
+                <button onclick="batchAction('stop')" class="action-btn danger">Emergency Halt</button>
+                <button onclick="refreshStats()" class="action-btn secondary">Purge Cache</button>
+            </div>
+        </div>
+    </main>
+
+    <main id="files-view" class="hero" style="display:none; padding-top: 50px;">
+        <div class="version-tag">File Repository</div>
+        <h1>MANAGE <span>FILES.</span></h1>
+        <div class="control-panel" style="max-width:800px; width:100%;">
+            <input type="text" id="file_search" class="search-bar" placeholder="Search files..." oninput="filterFiles()">
+            <div style="display:flex; gap:10px; margin-bottom:20px;">
+                <input type="file" id="file_upload_input" style="display:none;" onchange="handleFileUpload(event)">
+                <button onclick="document.getElementById('file_upload_input').click()" class="action-btn" style="width:auto; padding:10px 20px;">Upload File</button>
+                <button onclick="refreshFileList()" class="action-btn secondary" style="width:auto; padding:10px 20px;">Sync Storage</button>
+            </div>
+            <div id="file_list" style="display:grid; gap:10px; text-align:left;"></div>
+            <div id="file_console" style="margin-top:20px; background:#000; color:#fff; padding:15px; border-radius:8px; font-family:'JetBrains Mono'; font-size:11px; height:200px; overflow-y:auto; display:none;"></div>
+        </div>
+    </main>
+
+    <main id="ai-view" class="hero" style="display:none; padding-top: 50px;">
+        <div class="version-tag">Neural Coding Engine</div>
+        <h1>DECODE <span>LOGIC.</span></h1>
+        <div class="control-panel" style="max-width:900px; width:95%;">
+            <div style="margin-bottom:15px; display:flex; gap:10px; align-items:center;">
+                <span style="font-size:10px; color:var(--accent); text-transform:uppercase; font-weight:800;">[STATUS: ENCRYPTED]</span>
+                <span style="font-size:10px; color:var(--text-dim); text-transform:uppercase;">Model: Llama 3.3 70B</span>
+            </div>
+            <div id="ai_chat" style="height:450px; overflow-y:auto; background:#f1f5f9; border:1px solid var(--border); padding:20px; margin-bottom:20px; text-align:left; font-family:'JetBrains Mono'; font-size:13px; scroll-behavior: smooth; border-radius:8px;"></div>
+            <div style="display:flex; gap:10px;">
+                <input type="text" id="ai_input" placeholder="Enter your prompt for OpenAI...">
+                <button onclick="askAI()" class="action-btn" style="width:140px; background:var(--secondary); color:#fff;">EXECUTE</button>
+            </div>
+        </div>
+    </main>
+
+    <footer class="telemetry-bar">
+        <div>CORE_LOAD: <span id="cpu_load">0.00</span>%</div>
+        <div>HEAP_ALLOC: <span id="mem_usage">0.00</span>MB</div>
+        <div>SYNC_STATUS: <span>OPTIMAL</span></div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/driver.js@1.0.1/dist/driver.js.iife.js"></script>
+    <script>
+        const driver = window.driver.js.driver;
+
+        function runTutorial() {
+            const d = driver({
+                showProgress: true,
+                steps: [
+                    { element: '.logo', popover: { title: 'Welcome to Cloud Master', description: 'This is your central hub for node management and AI intelligence.', side: "bottom", align: 'start' }},
+                    { element: '#nav-home', popover: { title: 'Navigation', description: 'Quickly switch between Home, Dashboard, and AI Hub.', side: "bottom", align: 'start' }},
+                    { element: '#hero-panel', popover: { title: 'Uplink Control', description: 'Deploy and manage your neural nodes from this panel.', side: "right", align: 'start' }},
+                    { element: '#token-input', popover: { title: 'Authentication', description: 'Enter your node authentication token here to begin deployment.', side: "bottom", align: 'start' }},
+                    { element: '#btn-deploy', popover: { title: 'Deploy', description: 'Click here to establish a secure uplink for your node.', side: "top", align: 'start' }},
+                    { element: '.dashboard', popover: { title: 'Real-time Stats', description: 'Monitor your global network status, packet flux, and system uptime.', side: "top", align: 'start' }},
+                    { element: '.telemetry-bar', popover: { title: 'Telemetry', description: 'Detailed system health metrics including CPU load and memory usage.', side: "top", align: 'start' }},
+                    { element: '#nav-ai', popover: { title: 'AI Engine', description: 'Visit the AI HUB to interact with our advanced hosting expert for technical guidance.', side: "bottom", align: 'start' }},
+                ]
+            });
+
+            d.drive();
+        }
+
+        const form = document.getElementById('auth_process');
+        const logger = document.getElementById('console_log');
+
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('sys_time').innerText = now.toTimeString().split(' ')[0] + ' UTC';
+        }
+        setInterval(updateClock, 1000);
+
+        async function fetchTelemetry() {
+            try {
+                const res = await fetch('/api/status');
+                const data = await res.json();
+                document.getElementById('node_count').innerText = data.bots_active;
+                document.getElementById('data_count').innerText = data.total_images.toLocaleString();
+                document.getElementById('total_guilds').innerText = data.total_guilds;
+                
+                const h = Math.floor(data.uptime / 3600);
+                const m = Math.floor((data.uptime % 3600) / 60);
+                const s = data.uptime % 60;
+                document.getElementById('sys_uptime').innerText = `${h}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+                
+                document.getElementById('cpu_load').innerText = data.cpu.toFixed(2);
+                document.getElementById('mem_usage').innerText = (data.memory / 1024 / 1024).toFixed(2);
+                if (document.getElementById('dash_cpu')) document.getElementById('dash_cpu').innerText = data.cpu.toFixed(2) + '%';
+                if (document.getElementById('dash_mem')) document.getElementById('dash_mem').innerText = (data.memory / 1024 / 1024).toFixed(0) + 'MB';
+                if (document.getElementById('cloud_ping')) {
+                    document.getElementById('cloud_ping').innerText = data.ping + 'ms';
+                }
+                if (document.getElementById('hero_ping')) {
+                    document.getElementById('hero_ping').innerText = data.ping + 'ms';
+                }
+            } catch (e) {}
+        }
+        setInterval(fetchTelemetry, 2000);
+        fetchTelemetry();
+
+        async function manage(action) {
+            const token = document.getElementById('token').value;
+            const value = document.getElementById('payload').value;
+            if (!token) return alert('Token required');
+            
+            logger.style.display = 'block';
+            logger.innerText = `> Executing ${action}...`;
+
+            try {
+                const res = await fetch('/api/manage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, action, value })
+                });
+                const data = await res.json();
+                logger.innerText = `> ${data.message || data.error}`;
+            } catch (e) {
+                logger.innerText = `> Connection failed: ${e.message}`;
+            }
+        }
+
+        form.onsubmit = async (e) => {
+            e.preventDefault();
+            await manage('start');
+        };
+
+        function showView(viewId) {
+            document.getElementById('hero').style.display = 'none';
+            document.getElementById('dashboard-view').style.display = 'none';
+            document.getElementById('files-view').style.display = 'none';
+            document.getElementById('ai-view').style.display = 'none';
+            document.getElementById(viewId).style.display = 'flex';
+            if (viewId === 'dashboard-view') refreshBotList();
+            if (viewId === 'files-view') refreshFileList();
+        }
+
+        let allFiles = [];
+        async function refreshFileList() {
+            const list = document.getElementById('file_list');
+            list.innerHTML = '> Accessing storage...';
+            try {
+                const res = await fetch('/api/files');
+                allFiles = await res.json();
+                renderFileList(allFiles);
+            } catch (e) {
+                list.innerHTML = '> Storage sync failed';
+            }
+        }
+
+        function renderFileList(files) {
+            const list = document.getElementById('file_list');
+            list.innerHTML = files.map(file => `
+                <div class="file-item" style="background:var(--bg); border:1px solid var(--border); padding:15px; border-radius:8px; display:flex; flex-direction:column; gap:10px;">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <div style="display:flex; align-items:center;">
+                            <div class="file-icon">
+                                <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M14,2H6A2,2,0,0,0,4,4V20a2,2,0,0,0,2,2H18a2,2,0,0,0,2-2V8Zm4,18H6V4h7V9h5ZM13,11h3v2H13Zm0,4h3v2H13Z"/></svg>
+                            </div>
+                            <div>
+                                <div style="font-weight:800; color:var(--text)">${file.name}</div>
+                                <div style="font-size:10px; color:var(--text-dim)">${(file.size / 1024).toFixed(2)} KB</div>
+                            </div>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button onclick="startNode('${file.name}')" class="action-btn" style="width:auto; padding:5px 15px; font-size:10px; background:var(--accent); color:#fff;">START</button>
+                            <button onclick="stopNode('${file.name}')" class="action-btn danger" style="width:auto; padding:5px 15px; font-size:10px;">STOP</button>
+                            <button onclick="window.open('${file.url}', '_blank')" class="action-btn secondary" style="width:auto; padding:5px 10px; font-size:10px;">VIEW</button>
+                            <button onclick="renameFile('${file.name}')" class="action-btn secondary" style="width:auto; padding:5px 10px; font-size:10px;">RENAME</button>
+                            <button onclick="deleteFile('${file.name}')" class="action-btn danger" style="width:auto; padding:5px 10px; font-size:10px;">DELETE</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('') || '> No files found';
+        }
+
+        function filterFiles() {
+            const query = document.getElementById('file_search').value.toLowerCase();
+            const filtered = allFiles.filter(f => f.name.toLowerCase().includes(query));
+            renderFileList(filtered);
+        }
+
+        async function handleFileUpload(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const formData = new FormData();
+            formData.append('file', file);
+            try {
+                await fetch('/api/files/upload', { method: 'POST', body: formData });
+                refreshFileList();
+            } catch (e) { alert('Upload failed'); }
+        }
+
+        let logInterval;
+        async function startNode(name) {
+            try {
+                await fetch('/api/files/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name })
+                });
+                const console = document.getElementById('file_console');
+                console.style.display = 'block';
+                console.innerHTML = `> Starting node: ${name}...\n`;
+                
+                if (logInterval) clearInterval(logInterval);
+                logInterval = setInterval(async () => {
+                    const res = await fetch(`/api/files/logs/${name}`);
+                    const data = await res.json();
+                    console.innerHTML = data.logs.join('\n');
+                    console.scrollTop = console.scrollHeight;
+                    if (data.status === 'stopped') clearInterval(logInterval);
+                }, 1000);
+            } catch (e) { alert('Start failed'); }
+        }
+
+        async function stopNode(name) {
+            try {
+                await fetch('/api/files/stop', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name })
+                });
+                if (logInterval) clearInterval(logInterval);
+                document.getElementById('file_console').innerHTML += `\n> Process stopped manually.`;
+            } catch (e) { alert('Stop failed'); }
+        }
+
+        async function renameFile(oldName) {
+            const newName = prompt('Enter new filename:', oldName);
+            if (!newName || newName === oldName) return;
+            try {
+                await fetch('/api/files/rename', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ oldName, newName })
+                });
+                refreshFileList();
+            } catch (e) { alert('Rename failed'); }
+        }
+
+        async function deleteFile(name) {
+            if (!confirm(`Delete ${name}?`)) return;
+            try {
+                await fetch('/api/files/delete', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name })
+                });
+                refreshFileList();
+            } catch (e) { alert('Delete failed'); }
+        }
+
+        async function refreshBotList() {
+            const list = document.getElementById('bot_list');
+            list.innerHTML = '> Syncing nodes...';
+            try {
+                const res = await fetch('/api/bots');
+                const bots = await res.json();
+                list.innerHTML = bots.map(bot => `
+                    <div style="background:var(--card); border:1px solid var(--border); padding:20px; display:flex; justify-content:space-between; align-items:center; border-radius:12px; box-shadow: 0 4px 6px rgba(0,0,0,0.02); margin-bottom:10px;">
+                        <div style="text-align:left">
+                            <div style="font-weight:800; color:var(--text)">${bot.tag}</div>
+                            <div style="font-size:10px; color:${bot.active ? 'var(--primary)' : 'var(--text-dim)'}; font-weight:700;">${bot.active ? 'ONLINE' : 'OFFLINE'}</div>
+                            ${bot.active ? `
+                                <div style="font-size:10px; color:var(--text-dim); margin-top:5px; font-family:'JetBrains Mono'">
+                                    CPU: ${bot.stats.cpu}% | MEM: ${bot.stats.memory}MB
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div style="display:flex; gap:10px">
+                            ${bot.active 
+                                ? `<button onclick="manageBot('${bot.token}', 'stop')" class="action-btn danger" style="padding:10px 20px; width:auto">STOP</button>`
+                                : `<button onclick="manageBot('${bot.token}', 'start')" class="action-btn" style="padding:10px 20px; width:auto">START</button>`
+                            }
+                        </div>
+                    </div>
+                `).join('');
+            } catch (e) {
+                list.innerHTML = '> Error syncing nodes';
+            }
+        }
+
+        async function manageBot(token, action) {
+            try {
+                const res = await fetch('/api/manage', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ token, action })
+                });
+                refreshBotList();
+            } catch (e) {}
+        }
+
+        async function batchAction(action) {
+            if (!confirm(`Are you sure you want to ${action} all nodes?`)) return;
+            try {
+                const res = await fetch('/api/bots');
+                const bots = await res.json();
+                for (const bot of bots) {
+                    if (bot.active || action === 'start') {
+                        await fetch('/api/manage', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ token: bot.token, action })
+                        });
+                    }
+                }
+                refreshBotList();
+            } catch (e) { alert('Batch operation failed'); }
+        }
+
+        async function askAI() {
+            const input = document.getElementById('ai_input');
+            const chat = document.getElementById('ai_chat');
+            const prompt = input.value;
+            if (!prompt) return;
+
+            const userMsg = document.createElement('div');
+            userMsg.style.marginBottom = '15px';
+            userMsg.innerHTML = `<span style="color:var(--secondary)">[QUERY.DEV]</span>: ${prompt}`;
+            chat.appendChild(userMsg);
+            input.value = '';
+
+            const loadingId = 'ai_loading_' + Date.now();
+            const loadingMsg = document.createElement('div');
+            loadingMsg.id = loadingId;
+            loadingMsg.style.marginBottom = '15px';
+            loadingMsg.innerHTML = `<span style="color:var(--accent)">[ENGINE.CODING]</span>: Generating logic...`;
+            chat.appendChild(loadingMsg);
+            chat.scrollTop = chat.scrollHeight;
+
+            try {
+                const res = await fetch('/api/ai/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prompt })
+                });
+                const data = await res.json();
+                document.getElementById(loadingId).remove();
+
+                const aiMsg = document.createElement('div');
+                aiMsg.style.color = 'var(--text)';
+                aiMsg.style.background = 'rgba(255,255,255,0.03)';
+                aiMsg.style.marginBottom = '20px';
+                aiMsg.style.borderLeft = '2px solid var(--accent)';
+                aiMsg.style.padding = '15px';
+                aiMsg.style.borderRadius = '0 4px 4px 0';
+                aiMsg.innerHTML = `<span style="color:var(--accent)">[ENGINE.CODING]</span>:<br><pre style="white-space:pre-wrap; margin-top:10px; font-family:'JetBrains Mono';">${data.reply || data.error || 'No response'}</pre>`;
+                chat.appendChild(aiMsg);
+                chat.scrollTop = chat.scrollHeight;
+            } catch (e) {
+                const errorMsg = document.getElementById(loadingId);
+                if (errorMsg) errorMsg.innerHTML = `<span style="color:#ef4444">[ENGINE.CODING]</span>: Compilation error - ${e.message}`;
+            }
+        }
+
+        function refreshStats() {
+            fetchTelemetry();
+        }
+    </script>
+</body>
+</html>
